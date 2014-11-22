@@ -35,7 +35,7 @@ Example API URL: http://localhost:4200/api/v1/distribution/xcp/
 		- asset
 * Example Input: 
 
-    {"to_addresses": [{"address":"1LYRgNDuZfdnZKLkLeTb7UG4UQZyZGvV3w","asset":"LTBCOIN","amount":50}]}
+```{"to_addresses": [{"address":"1LYRgNDuZfdnZKLkLeTb7UG4UQZyZGvV3w","asset":"LTBCOIN","amount":50}]}```
 
 * Response:
 
