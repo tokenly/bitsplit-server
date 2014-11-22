@@ -23,7 +23,7 @@ Running the API server
 
 All endpoints accept and return data in JSON format.
 
-Example API URL: http://localhost:4200/api/v1/distribution/xcp
+Example API URL: http://localhost:4200/api/v1/distribution/xcp/
 
 **/api/v1/distribution/{protocol}/**
 
