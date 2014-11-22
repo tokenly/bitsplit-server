@@ -1,0 +1,2 @@
+#!/bin/sh
+nosetests --verbose --nocapture --with-coverage --cover-html --cover-html-dir=bypass-coverage --cover-inclusive --cover-branches --cover-tests --cover-erase --cover-package=servers,clients,entities,settings

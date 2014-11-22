@@ -1,0 +1,11 @@
+#!/usr/bin/python
+"""
+bitsplitd
+Daemon for handling distribution splits
+"""
+
+from servers.bitsplit_daemon import BitsplitDaemon
+
+daemon = BitsplitDaemon()
+
+daemon.run()

@@ -1,0 +1,7 @@
+#!/usr/bin/python
+"""
+Start the BitSplit API
+"""
+
+from servers.api import run
+run()

@@ -1,0 +1,6 @@
+jsonrpc
+bitcoin-python
+pymongo
+mailer
+flask
+python-bitcoinrpc
