@@ -132,7 +132,7 @@ class Distribution(DatabaseEntity):
 
     def verify_btc_funds(self, record):
         bitcoin = self.__class__.bitcoin
-        balance = bitcoin.get_balance_by_address(record["address"])
+        balance = bitcoin.get_balance_by_address(record["address"], 0)
 
         if balance < record["amount"]:
             print("{} not verified.. Balance {} < {}".format(
@@ -144,7 +144,6 @@ class Distribution(DatabaseEntity):
         return True
 
     def verify_xcp_funds(self, record):
-        print("ATTEMPTING TO VERIFY XCP")
         counterparty = self.__class__.counterparty
         asset = counterparty.get_asset_info(record["asset"])
 
@@ -160,8 +159,7 @@ class Distribution(DatabaseEntity):
             )
             raise Exception(message)
 
-        balance = counterparty.get_balance_by_address(record["address"])
-
+        balance = counterparty.get_balance_by_address(record["address"], record["asset"])
         if balance < record["amount"]:
             print("{} not verified.. Balance {} < {}".format(
                 record["address"],
@@ -214,12 +212,14 @@ class Distribution(DatabaseEntity):
         for transaction in self.to_addresses:
 
             # do not de-distribute
-            # TODO: check if this transaction has already been sent
             if 'status' in transaction and \
                     transaction['status'] == self.STATUS_DISTRIBUTED:
                 continue
-
-            if transaction['currency'] == 'xcp':
+            if 'xcp_tx_hash' in transaction:
+				#already sent, continue
+				continue
+				
+            if transaction['currency'] == 'XCP':
                 if not self.distribute_xcp_transaction(transaction):
                     self.save()
                     return False
@@ -236,7 +236,7 @@ class Distribution(DatabaseEntity):
     def raise_xcp_transaction_exception(self, transaction, message):
         raise Exception("XCP {}->{} ({} {}): {}".format(
             transaction["from_address"],
-            transaction["to_address"],
+            transaction["address"],
             transaction["amount"],
             transaction["asset"],
             message
@@ -246,7 +246,7 @@ class Distribution(DatabaseEntity):
     def distribute_xcp_transaction(self, transaction):
         # validate the address
         # FIXME: see if a python library can do this better
-        if not self.__class__.bitcoin.validate_address(transaction['to_address']):
+        if not self.__class__.bitcoin.validate_address(transaction['address']):
             self.raise_xcp_transaction_exception(transaction, "Unable to validate to_address")
 
         # FIXME: if this fails, could already be unlocked
@@ -255,19 +255,19 @@ class Distribution(DatabaseEntity):
         try:
             self.__class__.bitcoin.unlock_wallet()
         except Exception:
-            self.__class__.bitcoin.lock_wallet()
-            self.__class__.bitcoin.unlock_wallet()
+            return False
 
         # Create send.
         send_params = {
             'source': transaction["from_address"],
-            'destination': transaction["to_address"],
+            'destination': transaction["address"],
             'asset': transaction["asset"],
             'quantity': int(transaction["amount"]),
-            'fee': int(transaction["miner_fee"]),
+            'fee': self.__class__.counterparty.miner_fee,
             'allow_unconfirmed_inputs': True,
-            'regular_dust_size': int(transaction["dust_size"]),
-            'multisig_dust_size': int(transaction["dust_size"])
+            'regular_dust_size': self.__class__.counterparty.dust_size,
+            'multisig_dust_size': self.__class__.counterparty.dust_size,
+            'pubkey': self.get_address_pubkey(transaction["from_address"])
         }
 
         unsigned_tx_hex = self.__class__.counterparty.create_send(send_params)
@@ -275,7 +275,7 @@ class Distribution(DatabaseEntity):
         if not unsigned_tx_hex:
             self.raise_xcp_transaction_exception(transaction, "Unable to create_send")
 
-        signed_tx_hex = self.__class__.counteraprty.sign_transaction(unsigned_tx_hex)
+        signed_tx_hex = self.__class__.counterparty.sign_transaction(unsigned_tx_hex)
 
         if not signed_tx_hex:
             self.raise_xcp_transaction_exception(transaction, "Unable to sign_tx")
@@ -296,3 +296,11 @@ class Distribution(DatabaseEntity):
 
     def set_verified(self):
         self.set_status(self.STATUS_VERIFIED)
+        
+    def get_address_pubkey(self, address):
+        validate = self.__class__.bitcoin.validate_address(address)
+        if not validate or not validate["isvalid"]:
+            raise Exception("Could not get pubkey, invalid address " + address)
+        if not validate["ismine"]:
+            raise Exception("Address not from this wallet " + address)
+        return validate["pubkey"]

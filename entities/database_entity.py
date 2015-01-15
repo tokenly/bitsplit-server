@@ -1,5 +1,5 @@
 from clients.database import Database
-from bson import json_util
+from bson import ObjectId
 import json
 
 
@@ -93,9 +93,10 @@ class DatabaseEntity(object):
         data = self._data
         print(repr(data))
         if self._id:
-            self.__class__.collection.update({"_id": str(self._id)}, self._data)
+            self.__class__.collection.update({"_id": ObjectId(str(self._id))}, self._data)
         else:
-            self._data['_id'] = self.__class__.collection.save(self._data)
+            self._data['_id'] = self.__class__.collection.save(self._data)    
+    
 
     def delete(self):
         self.__class__.collection.remove({"_id": str(self._id)})

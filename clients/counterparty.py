@@ -4,22 +4,24 @@ from requests.auth import HTTPBasicAuth
 
 
 class Counterparty(object):
-    def __init__(self, api_url, user, password):
+    def __init__(self, api_url, user, password, miner_fee, dust_size):
         self.api_url = api_url
         self.user = user
         self.password = password
+        self.miner_fee = miner_fee
+        self.dust_size = dust_size
 
     def get_balances(self):
         return self._post(method='get_balances')
 
-    def get_balance_by_address(self, address):
+    def get_balance_by_address(self, address, asset):
         results = self._post(method='get_balances', params={
             'filters': {'field': 'address', 'op': '==', 'value': address}
         })
-        try:
-            return results[0]["quantity"]
-        except Exception:
-            return 0
+        for result in results:
+            if result["asset"] == asset:
+                return result["quantity"]
+        return 0
 
     def create_send(self, params):
         return self._post(method='create_send', params=params)
@@ -65,8 +67,8 @@ class Counterparty(object):
             data=payload,
             headers=headers,
             auth=auth)
-        raise Exception(response.text)
+       # raise Exception(response.text)
         try:
             return json.loads(response.text)["result"]
         except Exception:
-            return None
+            raise Exception(response.text)

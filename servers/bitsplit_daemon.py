@@ -85,17 +85,19 @@ class BitsplitDaemon(object):
         # for any transactions that failed to attempt distribution
         # email a report to an admin
         # TODO put code for email here
-        email = Email(Subject='BitSplit - Verified Report')
+        #
+        #email = Email(Subject='BitSplit - Verified Report')
 
         body = ""
         distros = Distribution.query_verified()
-
+        
         for distro in distros:
+            distro.set_ready_to_distribute()
             body += "Distribution {} verified<br />".format(str(distro._id))
-
-        if len(distros):
-            email.Html = body
-            email.send()
+        print(body)
+        #if len(distros):
+            #email.Html = body
+            #email.send()
 
         # no more anything
         for distro in distros:

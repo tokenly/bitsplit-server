@@ -24,13 +24,13 @@ class Bitcoin(object):
     def generate_wallet(self, account):
         return self.conn.getaccountaddress(account)
 
-    def get_balance_by_account(self, account):
-        return self.conn.getbalance(account)
+    def get_balance_by_account(self, account, minconf=1):
+        return self.conn.getbalance(account, minconf)
 
-    def get_balance_by_address(self, address):
+    def get_balance_by_address(self, address, minconf=1):
         account = self.conn.getaccount(address)
         if account:
-            return self.get_balance_by_account(account)
+            return self.get_balance_by_account(account,minconf)
         return None
 
     def get_received_transactions_by_address(self, address=None):
