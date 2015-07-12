@@ -2,7 +2,7 @@
 TEST BITSPLIT DAEMON
 """
 from bitsplit.daemon import Daemon
-from mock import Mock
+from unittest.mock import Mock
 
 
 class TestBitsplitDaemon(object):

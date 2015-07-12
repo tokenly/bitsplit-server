@@ -2,7 +2,7 @@
 TEST RUNNABLE
 """
 from util.runnable import Runnable
-from mock import Mock
+from unittest.mock import Mock
 import time
 
 
@@ -18,6 +18,15 @@ class TestRunnable(object):
     def test_running_tick(self):
         """ Do nothing on tick. """
         self.runnable.tick()
+
+    def test_running_async_loop(self):
+        """ Do nothing on tick. """
+        self.runnable.tick = Mock()
+        self.runnable.run(async=True, count=10, delay=0.001)
+
+        time.sleep(0.02)
+
+        assert self.runnable.tick.call_count == 10
 
     def test_running_for_iterations(self):
         """ Test that it can be run once through. """
@@ -45,25 +54,31 @@ class TestRunnable(object):
     def test_running_asynchronously(self):
         """ Test that it can be run in parallel. """
         self.runnable.tick = Mock()
-        self.runnable.run_async(count=2, delay=0.001)
+        self.runnable.run_async(count=10, delay=0.001)
 
-        time.sleep(0.001)
-        assert self.runnable.tick.call_count == 1
-
-        time.sleep(0.001)
-        assert self.runnable.tick.call_count == 2
+        for count in range(1, 10):
+            time.sleep(count * 0.001)
+            assert self.runnable.tick.call_count >= count
 
     def test_stopping(self):
         """ Test that it can be run in parallel. """
         self.runnable.tick = Mock()
-        self.runnable.run_async(count=10, delay=0.001)
+        self.runnable.run_async(count=10, delay=0.01)
 
-        time.sleep(0.001)
+        time.sleep(0.01)
+        print(self.runnable.tick.call_count)
         assert self.runnable.tick.call_count == 1
 
-        time.sleep(0.001)
+        time.sleep(0.01)
+        print(self.runnable.tick.call_count)
         assert self.runnable.tick.call_count == 2
 
         self.runnable.stop()
-        time.sleep(0.005)
-        assert self.runnable.tick.call_count == 2
+
+        time.sleep(0.01)
+        print(self.runnable.tick.call_count)
+        assert self.runnable.tick.call_count < 4
+
+        time.sleep(0.1)
+        print(self.runnable.tick.call_count)
+        assert self.runnable.tick.call_count < 4

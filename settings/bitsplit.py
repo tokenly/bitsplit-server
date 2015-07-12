@@ -1,6 +1,14 @@
 """
 BITSPLIT DAEMON SETTINGS
 """
+from __future__ import absolute_import
+from bitsplit.protocols.bitcoin import Bitcoin
+from bitsplit.protocols.counterparty import Counterparty
+
+CURRENCY_DRIVERS = {
+    'BTC': Bitcoin,
+    'XCP': Counterparty,
+}
 
 
 # EVERYTHING BENEATH THESE LINES IS DEPRECATED

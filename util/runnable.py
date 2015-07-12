@@ -1,7 +1,7 @@
 """
 RUNNABLE
 """
-import thread
+import _thread as thread
 import time
 
 
@@ -15,7 +15,7 @@ class Runnable(object):
     def __init__(self):
         self.running = False
 
-    def run(self, count=None, delay=None):
+    def run(self, count=None, delay=None, async=False):
         """ Start running loop. """
         self.running = True
 
@@ -24,18 +24,28 @@ class Runnable(object):
 
         iterations = 0
         max_iterations_reached = False
-        while self.running and not max_iterations_reached:
+        while self.running:
             iterations += 1
 
-            self.tick()
+            if async:
+                self.tick_async()
+            else:
+                self.tick()
 
             max_iterations_reached = count and iterations >= count
-            if not max_iterations_reached:
+            if max_iterations_reached:
+                self.stop()
+            else:
                 time.sleep(delay)
 
     def run_async(self, *args, **kwargs):
         """ Start running loop in new thread. """
+        kwargs["async"] = True
         return thread.start_new_thread(self.run, args, kwargs)
+
+    def tick_async(self, *args, **kwargs):
+        """ Tick asynchronously. """
+        return thread.start_new_thread(self.tick, args, kwargs)
 
     def tick(self):
         """ Tick a running loop. """
