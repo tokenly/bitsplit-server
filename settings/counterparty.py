@@ -1,11 +1,8 @@
-COUNTERPARTY = {
-    'user': '',
-    'password': '',
-    'ip': 'localhost:4000',
-    #'prefix': 'XCP_',
-    #'satoshi_mod': 100000000,
-    'base_fee': 5000,  # satoshis
-    'dust_size': 2500
-}
-#COUNTERPARTY['api_url'] = 'http://' + COUNTERPARTY['user'] + ':' + COUNTERPARTY['password'] + '@' + COUNTERPARTY['ip'] + '/api/'
-COUNTERPARTY['api_url'] = 'http://' + COUNTERPARTY['ip'] + '/api/'
+"""
+COUNTERPARTY SETTINGS
+These settings are specific to the CounterParty assets and API interface.
+"""
+
+API_URL = 'http://localhost:4000/api/'
+BASE_FEE = 5000  # in satoshis
+DUST_SIZE = 2500

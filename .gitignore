@@ -4,3 +4,4 @@ media/release
 media/build
 node_modules
 .coverage
+venv

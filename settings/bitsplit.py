@@ -1,5 +1,12 @@
-SATOSHI_MOD = pow(10, 8)
-BITSPLIT = {
+"""
+BITSPLIT DAEMON SETTINGS
+"""
+
+
+# EVERYTHING BENEATH THESE LINES IS DEPRECATED
+# AND UNDER REVIEW FOR REMOVAL
+SATOSHI_MOD_OLD = pow(10, 8)
+BITSPLIT_OLD_SETTINGS = {
     'database_engine': 'mongo',
     'database_url': 'mongodb://localhost:27017/bitsplit',
 
@@ -13,10 +20,9 @@ BITSPLIT = {
 
     # costs/fees
     'bitpslit_btc_fee_per_distribution': 0.000078,
-    'satoshi_mod': SATOSHI_MOD,
+    'satoshi_mod': SATOSHI_MOD_OLD,
     'xcp_miner_fee': 0.00001,
     'xcp_dust_size': 0.000025,
-    #'service_fee': 0,
     'decimals': 8,
 
     # mailer
@@ -30,9 +36,10 @@ BITSPLIT = {
     'email_to': '',
 }
 
-BITSPLIT['xcp_fee_per_to_address'] = \
-    (2 * BITSPLIT['xcp_dust_size']) + BITSPLIT['xcp_miner_fee']
+BITSPLIT_OLD_SETTINGS['xcp_fee_per_to_address'] = \
+    (2 * BITSPLIT_OLD_SETTINGS['xcp_dust_size']) + \
+    BITSPLIT_OLD_SETTINGS['xcp_miner_fee']
 
 from decimal import getcontext
 
-getcontext().prec = BITSPLIT['decimals']
+getcontext().prec = BITSPLIT_OLD_SETTINGS['decimals']

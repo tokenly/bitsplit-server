@@ -1,2 +1,12 @@
 #!/bin/sh
-nosetests --verbose --nocapture --with-coverage --cover-html --cover-html-dir=bypass-coverage --cover-inclusive --cover-branches --cover-tests --cover-erase --cover-package=servers,clients,entities,settings
+flake8 --exclude venv,old .
+rm -rf ./bypass-coverage
+nosetests --with-coverage \
+  --cover-erase \
+  --cover-html \
+  --cover-html-dir=bypass-coverage \
+  --cover-inclusive \
+  --cover-branches \
+  --cover-package=bitsplit,util,settings \
+  --cover-min-percentage=90 \
+  .
