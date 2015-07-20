@@ -65,7 +65,7 @@ Create a new distribution.
 
 ### DOCUMENTATION COMING SOON
 
-## GET /api/v1/distribution/<hash>/
+## GET /api/v1/distribution/{hash}/
 Receive the details for a specific distribution.
 
 
