@@ -1,7 +1,7 @@
 """
 RUNNABLE
 """
-import _thread as thread
+import thread
 import time
 
 

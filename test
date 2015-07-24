@@ -1,7 +1,7 @@
 #!/bin/sh
-./venv/bin/flake8 --exclude venv,old .
+flake8 --exclude venv,old .
 rm -rf ./bypass-coverage
-./venv/bin/nosetests --with-coverage \
+nosetests --with-coverage \
   --cover-erase \
   --cover-html \
   --cover-html-dir=bypass-coverage \

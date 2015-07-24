@@ -2,7 +2,7 @@
 TEST BITSPLIT DAEMON
 """
 from bitsplit.daemon import Daemon
-from unittest.mock import Mock, MagicMock
+from mock import Mock, MagicMock
 from bitsplit.models.distribution import Distribution
 
 

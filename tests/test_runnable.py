@@ -2,7 +2,7 @@
 TEST RUNNABLE
 """
 from util.runnable import Runnable
-from unittest.mock import Mock
+from mock import Mock
 import time
 
 
