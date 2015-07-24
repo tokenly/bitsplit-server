@@ -62,20 +62,18 @@ All endpoints accept and return data in JSON format.
 
 ## POST /api/v1/distribution/
 Create a new distribution.
-
 ### DOCUMENTATION COMING SOON
 
 ## GET /api/v1/distribution/{hash}/
 Receive the details for a specific distribution.
+### DOCUMENTATION COMING SOON
 
-
-# Bitsplitd
-
+# bitsplitd
 Inside the /settings/ folder, there are three major files:
 
-- bitcoin.py - bitcoind settings and credentials
-- bitsplit.py - bitsplit, mongo, and mailer settings
-- counterparty.py - counterpartyd settings and credentials
+- bitcoin.py - Bitcoind settings and credentials
+- bitsplit.py - Bitsplit, mongo, and mailer settings
+- counterparty.py - Counterpartyd settings and credentials
 
 The majority of what you will need to change are the bitcoin and
 counterparty credentials to point to the instances you wish to use; as
@@ -83,6 +81,16 @@ noted in the earlier sections.
 
 Other sections of note, primarily in the bitsplit.py file, are:
 
-- Mongo database settings (currently default)
+- Database settings (currently default)
 - SMTP settings
 - Reporting email addresses
+
+# api
+Inside the /settings/ folder, there will be two major files:
+
+- bitsplit.py - As mentioned above, these are the system settings
+- api.py - The host/ports for the API
+
+The majority of what you will need, with respect to the API, will be in
+the api.py file.
+### DOCUMENTATION COMING SOON
