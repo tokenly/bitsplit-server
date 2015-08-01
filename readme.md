@@ -72,7 +72,7 @@ Receive the details for a specific distribution.
 Inside the /settings/ folder, there are three major files:
 
 - bitcoin.py - Bitcoind settings and credentials
-- bitsplit.py - Bitsplit, mongo, and mailer settings
+- bitsplit.py - Bitsplit, mongo, fees, constants, and mailer settings
 - counterparty.py - Counterpartyd settings and credentials
 
 The majority of what you will need to change are the bitcoin and
@@ -93,4 +93,41 @@ Inside the /settings/ folder, there will be two major files:
 
 The majority of what you will need, with respect to the API, will be in
 the api.py file.
-### DOCUMENTATION COMING SOON
+
+# Logic Flow by Protocol
+# Bitcoin
+## Fixed Amount Distribution
+1. Create distribution via API, providing protocol, addresses, and
+   quantities.
+### EXAMPLE OF REQUEST JSON TO COME
+2. Distribution created, providing the address to send BTC funds to,
+   including any additional fees.
+### EXAMPLE OF RESPONSE JSON TO COME
+3. Verify that funds are provided for BTC to fund distribution.
+4. Create listed distributions transactions of the funds requested to
+   the addresses provided. Making use of `sendmany` call.
+5. Verify that all transactions have been completed via confirmations.
+6. Process any webhooks or notification steps.
+7. Finalize distribution and archive.
+
+## Variable Amount Distribution
+### COMING IN THE FUTURE
+
+
+# Counterparty
+## Fixed Amount Distribution
+1. Create distribution via API, providing protocol, asset, addresses,
+   and quantities.
+### EXAMPLE OF REQUEST JSON TO COME
+2. Distribution created, providing the address to send BTC funds and XCP
+   assets to, including any additional fees.
+### EXAMPLE OF RESPONSE JSON TO COME
+3. Verify that funds are provided for BTC and XCP to fund distribution.
+4. Create listed distributions transactions of the asset requested to
+   the addresses provided.
+5. Verify that all transactions have been completed via confirmations.
+6. Process any webhooks or notification steps.
+7. Finalize distribution and archive.
+
+## Variable Amount Distribution
+### COMING IN THE FUTURE
