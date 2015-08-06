@@ -3,7 +3,7 @@ BITSPLIT PROTOCOL DRIVER
 """
 
 
-class Protocol(object):
+class Driver(object):
     """
     BITSPLIT PROTOCOL DRIVER
     A generic interface for interacting with a protocol (Bitcoin, Dogecoin,

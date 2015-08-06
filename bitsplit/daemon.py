@@ -2,12 +2,12 @@
 BITSPLIT DAEMON
 """
 from bitsplit.models.distribution import Distribution
-from util.runnable import Runnable
+from gevent import Greenlet
+from util.logger import Logger
+import gevent
 
-# TODO Handle fees, is this a pre- or post- action?
 
-
-class Daemon(Runnable):
+class Daemon(Greenlet):
     """
     BITSPLIT DAEMON
     The primary thread that runs the whole shebang:
@@ -15,52 +15,28 @@ class Daemon(Runnable):
     * Handle them in their current state
     * Connect to drivers appropriate to the currencies involved
     """
-    RUNNABLE_DELAY = 30
+    def _run(self):
+        """ Main run loop. """
+        NO_WORK_DELAY = 5  # FIXME move this to a settings file
 
-    def tick(self):
-        """ The main loop ticking. """
-        self.handle_incoming_distributions()
-        self.handle_outgoing_distributions()
-        self.verify_completed_distributions()
+        self.running = True
+        while self.running:
 
-    @classmethod
-    def handle_incoming_distributions(cls):
-        """
-        Incoming transactions.
-        All these are doing is waiting for funds to show up.
-        If they haven't shown up, check again next time.
-        """
-        distros = Distribution.find_pending_incoming_funds()
+            has_work = True
+            while has_work:
 
-        for distro in distros:
-            # Mark this step as complete if funds are available.
-            if distro.has_incoming_funds():
-                distro.set_pending_outgoing()
+                distro = self.get_next_distribution()
+                if distro:
+                    distro.start()
+                else:
+                    has_work = False
 
-    @classmethod
-    def handle_outgoing_distributions(cls):
-        """
-        Outgoing transactions.
-        Funds were verified, send all distribution funds to recipients.
-        """
-        distros = Distribution.find_pending_outgoing_funds()
+            Logger.log("No work to do.  Sleeping for {}s.".format(
+                NO_WORK_DELAY
+            ))
+            gevent.sleep(NO_WORK_DELAY)
 
-        for distro in distros:
-            # There are no unsent transactions
-            if distro.has_sent_all_transactions():
-                distro.set_pending_verification()
-
-            # Any transactions were unsent
-            else:
-                distro.send_unsent_transactions()
-
-    @classmethod
-    def verify_completed_distributions(cls):
-        """ Verification and reporting. """
-        distros = Distribution.find_pending_verification()
-
-        for distro in distros:
-
-            # All is well.
-            if distro.is_complete():
-                distro.set_verified()
+    def get_next_distribution(self):
+        """ Get the next Distribution that needs action. """
+        distro = Distribution.find_one_needing_action()
+        return distro

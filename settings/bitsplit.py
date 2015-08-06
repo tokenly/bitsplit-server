@@ -2,8 +2,8 @@
 BITSPLIT DAEMON SETTINGS
 """
 from __future__ import absolute_import
-from bitsplit.protocols.bitcoin import Bitcoin
-from bitsplit.protocols.counterparty import Counterparty
+from bitsplit.drivers.bitcoin import Bitcoin
+from bitsplit.drivers.counterparty import Counterparty
 
 CURRENCY_DRIVERS = {
     'BTC': Bitcoin,

@@ -1,0 +1,9 @@
+#!/usr/bin/env python
+"""
+BITSPLIT API
+Webserver for receiving requests against the Bitsplit database.
+"""
+from bitsplit.api import Api
+
+API = Api()
+API.start()

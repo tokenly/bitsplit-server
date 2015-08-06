@@ -1,13 +1,2 @@
-BITCOIN = {
-    'user': '',
-    'password': '',
-    'host': '',
-    'port': 8332,
-    'passphrase': '',
-}
-BITCOIN['api_url'] = 'http://{}:{}@{}:{}/'.format(
-    BITCOIN['user'],
-    BITCOIN['password'],
-    BITCOIN['host'],
-    str(BITCOIN['port']),
-)
+BITCOIN_URL = 'http://example:example@bitsplit.tokenly.com:8332/'
+BITCOIN_PASSPHRASE = ''

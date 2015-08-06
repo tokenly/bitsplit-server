@@ -1,0 +1,5 @@
+#!/bin/bash
+virtualenv venv
+source venv/bin/activate
+pip install setuptools==17.1.0
+pip install -r requirements.txt
