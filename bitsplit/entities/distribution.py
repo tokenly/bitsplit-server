@@ -1,37 +1,59 @@
 """
 DISTRIBUTION
 """
-from bitsplit.driver import Driver
+from bitsplit.driver_loader import DriverLoader
 
 
 class Distribution(object):
-    """
-    DISTRIBUTION
-    Data structure that holds Transactions incoming and outgoing.
-    """
+
+    STATUSES_HANDLED = [
+        'new',
+        'verifying_incoming',
+        'verified_incoming',
+        'sending_outgoing',
+        'sent_outgoing',
+        'verifying_outgoing',
+        'verified_outgoing',
+        'verifying',
+        'verified',
+        'reporting',
+        'reported',
+        'archiving',
+    ]
+
     def __init__(self, data):
+        """
+        DISTRIBUTION
+        Data structure that holds Transactions incoming and outgoing.
+        """
+
         self.data = data
-        self.drivers = Driver
+        self.driver_loader = DriverLoader
+
+    def get_wrapped_transactions(self, transactions):
+        """ Wrap a list of transactions. """
+        return [
+            self.driver_loader.get_transaction_driver(tx['currency'])(tx)
+            for tx in transactions
+        ]
+
+    def get_incoming_transactions(self):
+        """ Get the list of incoming transactions, wrapped. """
+        return self.get_wrapped_transactions(self.data.get('incoming', []))
+
+    def get_outgoing_transactions(self):
+        """ Get the list of outgoing transactions, wrapped. """
+        return self.get_wrapped_transactions(self.data.get('outgoing', []))
 
     def process(self):
         """ Process a Distribution through the states. """
-        if self.is_new():
-            self.handle_new()
+        for status in self.STATUSES_HANDLED:
+            method = self.__getattr__('handle_' + status)
 
-        if self.is_verifying_incoming():
-            self.handle_verifying_incoming()
 
-        if self.is_verifying_outgoing():
-            self.handle_verifying_outgoing()
-
-        if self.is_verified():
-            self.handle_verified()
-
-        if self.is_reporting():
-            self.handle_reporting()
-
-        if self.is_reported():
-            self.handle_reported()
+    def is_status(self, status):
+        """ Is this distribution in the current status? """
+        return self.data.get('status') == status
 
     @classmethod
     def find_processable(cls):
