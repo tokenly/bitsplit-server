@@ -16,7 +16,16 @@ class TestDriverLoader(object):
     def test_bitcoin(self):
         assert DriverLoader.get('btc') is Bitcoin
 
-    def test_overloading(self):
+    def test_overwriting_drivers(self):
         DriverLoader.set('btc', MockDriver)
 
         assert DriverLoader.get('btc') is MockDriver
+
+    def test_invalid(self):
+        failed = False
+        try:
+            DriverLoader.get('zzz')
+        except ValueError:
+            failed = True
+
+        assert failed is True

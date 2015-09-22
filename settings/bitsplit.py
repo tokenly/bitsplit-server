@@ -5,7 +5,7 @@ from __future__ import absolute_import
 from bitsplit.drivers.bitcoin import Bitcoin
 
 CURRENCY_DRIVERS = {
-    'BTC': Bitcoin,
+    'btc': Bitcoin,
 }
 
 # Duration to wait before checking for Distributions if all work completed.

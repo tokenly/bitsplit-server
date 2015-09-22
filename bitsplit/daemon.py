@@ -20,11 +20,8 @@ class Daemon(Greenlet):
         self.logger = Logger()
         self.distributions = Distribution
 
-        try:
-            with file('VERSION', 'r') as version_file:
-                self.version = version_file.read().strip()
-        except Exception:
-            self.version = 'VERSION_ERROR'
+        with file('VERSION', 'r') as version_file:
+            self.version = version_file.read().strip()
 
     def _run(self):
         """ Process Distributions on a loop. """

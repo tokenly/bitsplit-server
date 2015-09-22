@@ -11,8 +11,12 @@ class Driver(object):
 
     def verify_incoming(self, transaction):
         """ Verify that an incoming transaction has been received. """
-        return False
+        pass
 
     def process_outgoing(self, transaction):
-        """ Process an outgoing transaction and verify it processed. """
-        return False
+        """ Process an outgoing transaction. """
+        pass
+
+    def verify_outgoing(self, transaction):
+        """ Verify an outgoing transaction was processed properly. """
+        pass
