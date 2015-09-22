@@ -89,7 +89,7 @@ class Distribution(object):
     def get_wrapped_transactions(self, transactions):
         """ Wrap a list of transactions. """
         return [
-            self.driver_loader.get_transaction_driver(tx['currency'])(tx)
+            self.driver_loader.get(tx['currency'])(tx)
             for tx in transactions
         ]
 

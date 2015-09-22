@@ -6,7 +6,16 @@ from bitsplit.driver_loader import DriverLoader
 from bitsplit.entities.distribution import Distribution
 
 
-class MockBitcoin(object):
+class MockDriver(object):
+    def __init__(self, data):
+        self.data = data
+
+
+class MockBitcoin(MockDriver):
+    pass
+
+
+class MockCounterparty(MockDriver):
     pass
 
 
@@ -14,6 +23,7 @@ class TestDistribution(object):
     def __init__(self):
         DriverLoader.clear()
         DriverLoader.set('btc', MockBitcoin)
+        DriverLoader.set('xcp', MockCounterparty)
         self.distro = None
 
     def setup(self):
@@ -26,11 +36,23 @@ class TestDistribution(object):
                     "amount": "0.001",
                     "address": "longbutfakeaddress"
                 },
+                {
+                    "currency": "xcp",
+                    "amount": "1234",
+                    "asset": "ltbcoin",
+                    "address": "longbutfakeaddress"
+                },
             ],
             "outgoing": [
                 {
                     "currency": "btc",
                     "amount": "0.001",
+                    "address": "anotherlongaddress"
+                },
+                {
+                    "currency": "xcp",
+                    "amount": "1234",
+                    "asset": "ltbcoin",
                     "address": "anotherlongaddress"
                 },
             ],
@@ -53,6 +75,20 @@ class TestDistribution(object):
 
         # Still None.
         assert self.distro.get('what') is None
+
+    def test_incoming_data(self):
+        incoming = self.distro.get_incoming_transactions()
+        assert len(incoming) == 2
+
+        assert type(incoming[0]) is MockBitcoin
+        assert type(incoming[1]) is MockCounterparty
+
+    def test_outgoing_data(self):
+        outgoing = self.distro.get_outgoing_transactions()
+        assert len(outgoing) == 2
+
+        assert type(outgoing[0]) is MockBitcoin
+        assert type(outgoing[1]) is MockCounterparty
 
     def test_process(self):
         self.distro.process()
