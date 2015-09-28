@@ -4,7 +4,7 @@ DAEMON
 from bitsplit.entities.distribution import Distribution
 from bitsplit.logger import Logger
 from gevent import Greenlet
-from settings.bitsplit import NO_WORK_DELAY
+from settings.daemon import NO_WORK_DELAY
 
 import gevent
 

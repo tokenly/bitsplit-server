@@ -1,7 +1,7 @@
 """
 DRIVER LOADER
 """
-from settings.bitsplit import CURRENCY_DRIVERS
+from settings.daemon import CURRENCY_DRIVERS
 
 
 class DriverLoader(object):
