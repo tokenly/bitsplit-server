@@ -182,7 +182,6 @@ Any data that the driver modifies will then be saved back into the
 Distribution, so you can add additional information to the Transactions
 or Distributions.
 
-*Warning:* Information you store will likely be visible via the API.
-the API.
+**Warning:** Information you store will likely be visible via the API.
 
 [bitcoind-ubuntu]: http://virtuedev.com/bitcoin/guide-to-compile-install-bitcoind-on-ubuntu-12-04-using-virtualbox/
