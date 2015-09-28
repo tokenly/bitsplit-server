@@ -1,7 +1,9 @@
 #!/bin/sh
+flake8 bitsplit settings
 nosetests --with-coverage \
     --cover-erase \
     --cover-inclusive \
     --cover-package=bitsplit,settings \
     --cover-html \
-    --cover-html-dir=coverage
+    --cover-html-dir=coverage \
+    --cover-min-percentage=90

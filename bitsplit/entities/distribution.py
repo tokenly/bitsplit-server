@@ -5,73 +5,41 @@ from bitsplit.driver_loader import DriverLoader
 
 
 class Distribution(object):
+    """
+    DISTRIBUTION
+    A package of information relating to one set-up of Bitsplit.  It will
+    involve incoming and outgoing transactions and have a status.  Enclosed
+    within it will be all the information needed to process a Distribution
+    from end-to-end.
+    """
 
     STATUSES_HANDLED = [
         'new',
-        # 'verifying_incoming',
-        # 'verified_incoming',
-        # 'sending_outgoing',
-        # 'sent_outgoing',
-        # 'verifying_outgoing',
-        # 'verified_outgoing',
-        # 'verifying',
-        # 'verified',
-        # 'reporting',
-        # 'reported',
-        # 'archiving',
+        'verifying_incoming',
+        'verified_incoming',
+        'sending_outgoing',
+        'sent_outgoing',
+        'verifying_outgoing',
+        'verified_outgoing',
+        'reporting',
+        'reported',
+        'archiving',
     ]
+
+    datasource = None
+
+    @classmethod
+    def set_datasource(cls, datasource):
+        cls.datasource = datasource
 
     @classmethod
     def find_processable(cls):
-        raw = [
-            {
-                "id": "abc123",
-                "status": "new",
-                "fees": [
-                    {
-                        "currency": "btc",
-                        "amount": "0.0001"
-                    }
-                ],
-                "incoming": [
-                    {
-                        "currency": "btc",
-                        "address": "abc123",
-                        "amount": "1.00010000",
-                        "verified": False
-                    }
-                ],
-                "outgoing": [
-                    {
-                        "currency": "btc",
-                        "address": "abc123",
-                        "amount": "0.50000000",
-                        "sent": False,
-                        "verified": False
-                    },
-                    {
-                        "currency": "btc",
-                        "address": "xyz321",
-                        "amount": "0.50000000",
-                        "sent": False,
-                        "verified": False
-                    },
-                ],
-                "hooks": [
-                    {
-                        "type": "webhook",
-                        "url": "http://guillaume.vanderest.org/bitsplit.php"
-                    },
-                    {
-                        "type": "email",
-                        "address": "guillaume@vanderest.org",
-                        "format": "html"
-                    }
-                ]
+        records = cls.datasource.find({
+            'status': {
+                '$in': cls.STATUSES_HANDLED
             }
-        ]
-
-        return map(lambda tx: Distribution(tx), raw)
+        })
+        return map(lambda tx: Distribution(tx), records)
 
     def __init__(self, data):
         """
@@ -113,6 +81,46 @@ class Distribution(object):
         """ Is this distribution in the current status? """
         return self.data.get('status') == status
 
+    def set_status(self, status):
+        """ Update the status. """
+        self.set("status", status)
+
     def handle_new(self):
-        """ Handle a new Distribution. """
-        pass
+        """ Stub: Handle a new Distribution. """
+        self.set_status("verifying_incoming")
+
+    def handle_verifying_incoming(self):
+        """ Stub: Handle verification of incoming Transactions. """
+        self.set_status("verified_incoming")
+
+    def handle_verified_incoming(self):
+        """ Stub: Handle post-verification of incoming Transactions. """
+        self.set_status("sending_outgoing")
+
+    def handle_sending_outgoing(self):
+        """ Stub: Handle the sending of outgoing Transactions. """
+        self.set_status("sent_outgoing")
+
+    def handle_sent_outgoing(self):
+        """ Stub: Handle the post-sending of outgoing Transactions. """
+        self.set_status("verifying_outgoing")
+
+    def handle_verifying_outgoing(self):
+        """ Stub: Handle the verification of outgoing Transactions. """
+        self.set_status("verified_outgoing")
+
+    def handle_verified_outgoing(self):
+        """ Stub: Handle the post-verification of outgoing Transactions. """
+        self.set_status("reporting")
+
+    def handle_reporting(self):
+        """ Stub: Handle the reporting of the Ditribution. """
+        self.set_status("reported")
+
+    def handle_reported(self):
+        """ Stub: Handle the post-reporting of the Ditribution. """
+        self.set_status("archiving")
+
+    def handle_archiving(self):
+        """ Stub: Handle the post-reporting of the Ditribution. """
+        self.set_status("archived")
