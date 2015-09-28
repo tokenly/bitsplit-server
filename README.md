@@ -89,3 +89,71 @@ return to the shell:
 3. View the results.  An ASCII-style output should display, and HTML
    reporting of the coverage should also be generated in the `coverage`
    directory.
+
+
+Creating Currency Drivers
+=========================
+Currency Drivers are intended to be easy to implement, as the basis for
+the Bitsplit system is very generic, with specificity added in the
+Drivers alone.
+
+As such, code for a Driver should look fairly simple, understanding this
+example is completely silly and only intends to convey that you can use
+any basis you need to in order to make a driver:
+
+```python
+from bitsplit.driver import Driver
+from some.library.you.are.using import Banana
+
+class BananaDriver(Driver):
+    def setup(self, distribution):
+        """ Any extra steps to take after creation? """
+        self.incoming_bananas = [1]
+        self.outgoing_bananas = []
+
+    def teardown(self):
+        """ Any extra steps to take before destruction? """
+        pass
+
+    def verify_incoming(self, transaction):
+        """ Verify that an incoming transaction has been received. """
+        return 1 in self.incoming_bananas
+
+    def process_outgoing(self, transaction):
+        """ Process an outgoing transaction. """
+        self.outgoing_bananas.append(transaction.get('amount'))
+        return True
+
+    def verify_outgoing(self, transaction):
+        """ Verify an outgoing transaction was processed properly. """
+        return len(self.outgoing_bananas) === 3
+```
+
+With a Distribution and its Transactions looking like the following,
+with a few pieces of additional information for the Daemon to process
+it, wrapped within an object using getters/setters:
+
+```python
+{
+    "id": "abc123",  # hash
+    "incoming": [
+        {
+            "currency": "btc",
+            "address": "abc123",
+            "amount": "1.00010000",
+        }
+    ],
+    "outgoing": [
+        {
+            "currency": "btc",
+            "address": "abc123",
+            "amount": "0.50000000",
+        },
+        {
+            "currency": "btc",
+            "address": "xyz321",
+            "amount": "0.50000000",
+        },
+    ],
+}
+```
