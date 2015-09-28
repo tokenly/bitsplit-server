@@ -103,9 +103,9 @@ return to the shell:
 ```
 
 2. Run the tests.
-
+```
     $ ./test
-
+```
 3. View the results.  An ASCII-style output should display, and HTML
    reporting of the coverage should also be generated in the `coverage`
    directory.
