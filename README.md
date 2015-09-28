@@ -155,23 +155,23 @@ it, wrapped within an object using getters/setters:
 
 ```python
 {
-    "id": "abc123",  # hash
+    "id": "abc123",  # unique distribution hash
     "incoming": [
         {
             "currency": "btc",
-            "address": "abc123",
+            "address": "abc123",  # from-address
             "amount": "1.00010000",
         }
     ],
     "outgoing": [
         {
             "currency": "btc",
-            "address": "abc123",
+            "address": "abc123",  # to-address
             "amount": "0.50000000",
         },
         {
             "currency": "btc",
-            "address": "xyz321",
+            "address": "xyz321",  # to-address
             "amount": "0.50000000",
         },
     ],
