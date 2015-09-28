@@ -32,7 +32,7 @@ Basic software dependencies:
 
 * Python 2.7.x - https://www.python.org/downloads/
 * Bitcoind - https://github.com/bitcoin/bitcoin
-    * [Ubuntu Installation Guide](http://virtuedev.com/bitcoin/guide-to-compile-install-bitcoind-on-ubuntu-12-04-using-virtualbox/)
+    * [Ubuntu Installation Guide][bitcoind-ubuntu]
 * Counterpartyd - https://github.com/CounterpartyXCP/counterpartyd
     * Requires fully up to date and indexed bitcoind node.
 
@@ -59,6 +59,7 @@ appropriate naming for their section being configured:
 
 * daemon.py - Bitsplit Daemon
 * api.py - Bitsplit API
+* webserver.py - Bitsplit Webserver for HTML/CSS/JS
 * bitcoin.py - Bitcoin protocol
 * counterparty.py - Counterparty protocol
 * mail.py - SMTP/Mailer
@@ -68,9 +69,17 @@ Starting the Services
 Now that you have things installed, you need only start the two primary
 services that make up the Bitsplit project:
 
-* Start the Daemon and process distributions:
+* Start the Daemon and process Distributions:
 
     ./bitsplitd
+
+* Start the API and receive Distributions:
+
+    ./api
+
+* Start the client-facing webserver and receive web visits:
+
+    ./webserver
 
 Run Unit Tests
 --------------
@@ -157,3 +166,5 @@ it, wrapped within an object using getters/setters:
     ],
 }
 ```
+
+[bitcoind-ubuntu]: http://virtuedev.com/bitcoin/guide-to-compile-install-bitcoind-on-ubuntu-12-04-using-virtualbox/
