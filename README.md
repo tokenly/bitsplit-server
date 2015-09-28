@@ -45,17 +45,17 @@ Installing Bitsplit Server
 --------------------------
 1. Clone the repository.
 ```
-    $ git clone git@github.com:tokenly/bitsplit-server.git
+    git clone git@github.com:tokenly/bitsplit-server.git
 ```
 2. Move to the source code folder and create a virtual environment.
 ```
-    $ cd bitsplit-server
-    $ virtualenv venv
+    cd bitsplit-server
+    virtualenv venv
 ```
 3. Turn on the virtual environment, and install the required packages.
 ```
-    $ source venv/bin/activate
-    $ pip install -r requirements.txt
+    source venv/bin/activate
+    pip install -r requirements.txt
 ```
 
 Configuration
@@ -98,13 +98,13 @@ return to the shell:
 
 1. Enter the virtual environment.
 ```
-    $ cd ~/code/bitsplit/
-    $ source venv/bin/activate
+    cd ~/code/bitsplit/
+    source venv/bin/activate
 ```
 
 2. Run the tests.
 ```
-    $ ./test
+    ./test
 ```
 3. View the results.  An ASCII-style output should display, and HTML
    reporting of the coverage should also be generated in the `coverage`
