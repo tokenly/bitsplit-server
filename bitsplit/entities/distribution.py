@@ -16,15 +16,17 @@ class Distribution(object):
     """
     STATUSES_HANDLED = [
         'new',
-        'verifying_incoming',
+        'verifying_incoming',  # Incoming transactions.
         'verified_incoming',
-        'sending_outgoing',
+        'sending_outgoing',  # Outgoing transactions
         'sent_outgoing',
         'verifying_outgoing',
         'verified_outgoing',
-        'reporting',
+        'verifying',  # Final distribution verification.
+        'verified',
+        'reporting',  # Queue or send out reports.
         'reported',
-        'archiving',
+        'archiving',  # Finalize distribution work for "forgetting."
     ]
     TABLE = 'distributions'
     storage = None
