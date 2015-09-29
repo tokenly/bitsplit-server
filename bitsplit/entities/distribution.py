@@ -139,6 +139,14 @@ class Distribution(object):
 
     def handle_verified_outgoing(self):
         """ Stub: Handle the post-verification of outgoing Transactions. """
+        self.set_status("verifying")
+
+    def handle_verifying(self):
+        """ Stub: Final verification of entire Distribution. """
+        self.set_status("verified")
+
+    def handle_verified(self):
+        """ Stub: Post-final verification of entire Distribution. """
         self.set_status("reporting")
 
     def handle_reporting(self):

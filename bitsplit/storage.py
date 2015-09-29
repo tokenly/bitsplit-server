@@ -11,7 +11,7 @@ class Storage(object):
     def __init__(self, table):
         self.table = table
 
-    def find(self, spec):
+    def find(self, spec=None):
         return []
 
     def find_one(self, *args, **kwargs):
