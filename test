@@ -6,4 +6,5 @@ nosetests --with-coverage \
     --cover-package=bitsplit,settings \
     --cover-html \
     --cover-html-dir=coverage \
-    --cover-min-percentage=90
+    --cover-min-percentage=90 \
+    $*
