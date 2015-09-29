@@ -2,6 +2,7 @@
 DISTRIBUTION
 """
 from bitsplit.driver_loader import DriverLoader
+from bitsplit.logger import Logger
 from settings.daemon import STORAGE_CLASS
 
 
@@ -61,6 +62,7 @@ class Distribution(object):
         DISTRIBUTION
         Data structure that holds Transactions incoming and outgoing.
         """
+        self.logger = Logger()
 
         self.data = data
         self.get = self.data.get
@@ -98,7 +100,16 @@ class Distribution(object):
 
     def set_status(self, status):
         """ Update the status. """
+        id = self.get("id")
+        previous_status = self.get("status")
+
         self.set("status", status)
+
+        self.logger.log("Updated {} status from {} to {}.".format(
+            id,
+            previous_status,
+            status
+        ))
 
     def handle_new(self):
         """ Stub: Handle a new Distribution. """
