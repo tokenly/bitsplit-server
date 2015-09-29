@@ -19,7 +19,7 @@ class MockCounterparty(MockDriver):
     pass
 
 
-class MockDistributionDatasource(object):
+class MockStorage(object):
     def find(self, spec):
         return [
             {
@@ -77,7 +77,8 @@ class TestDistribution(object):
         DriverLoader.set('xcp', MockCounterparty)
         self.distro = None
 
-        Distribution.set_datasource(MockDistributionDatasource())
+        Distribution.reset_storage()
+        Distribution.set_storage(MockStorage())
 
     def setup(self):
         self.distro = Distribution.find_processable()[0]

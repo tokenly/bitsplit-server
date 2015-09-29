@@ -1,9 +1,10 @@
 """
 BITSPLIT DAEMON SETTINGS
 """
-from __future__ import absolute_import
 from bitsplit.drivers.bitcoin import Bitcoin
+from bitsplit.storages.json import JsonStorage
 
+STORAGE_CLASS = JsonStorage
 CURRENCY_DRIVERS = {
     'btc': Bitcoin,
 }

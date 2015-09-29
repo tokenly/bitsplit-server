@@ -2,6 +2,7 @@
 DISTRIBUTION
 """
 from bitsplit.driver_loader import DriverLoader
+from settings.daemon import STORAGE_CLASS
 
 
 class Distribution(object):
@@ -12,7 +13,6 @@ class Distribution(object):
     within it will be all the information needed to process a Distribution
     from end-to-end.
     """
-
     STATUSES_HANDLED = [
         'new',
         'verifying_incoming',
@@ -25,16 +25,31 @@ class Distribution(object):
         'reported',
         'archiving',
     ]
-
-    datasource = None
+    TABLE = 'distributions'
+    storage = None
 
     @classmethod
-    def set_datasource(cls, datasource):
-        cls.datasource = datasource
+    def set_storage(cls, storage):
+        cls.storage = storage
+
+    @classmethod
+    def clear_storage(cls):
+        cls.storage = None
+
+    @classmethod
+    def reset_storage(cls):
+        cls.clear_storage()
+        cls.setup_storage()
+
+    @classmethod
+    def setup_storage(cls):
+        if not cls.storage:
+            cls.set_storage(STORAGE_CLASS(cls.TABLE))
 
     @classmethod
     def find_processable(cls):
-        records = cls.datasource.find({
+        cls.setup_storage()
+        records = cls.storage.find({
             'status': {
                 '$in': cls.STATUSES_HANDLED
             }
