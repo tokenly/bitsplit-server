@@ -78,7 +78,7 @@ services that make up the Bitsplit project:
 
 * Start the Daemon and process Distributions:
 ```
-   ./bitsplitd
+   ./daemon
 ```
 
 * Start the API and receive Distributions:
