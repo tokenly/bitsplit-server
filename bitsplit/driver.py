@@ -8,6 +8,9 @@ class Driver(object):
     DRIVER
     Class for verifying transactions.
     """
+    def __init__(self, distribution):
+        """ Create the Driver, storing the distribution. """
+        self.distribution = distribution
 
     def verify_incoming(self, transaction):
         """ Verify that an incoming transaction has been received. """
