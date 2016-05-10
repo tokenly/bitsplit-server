@@ -1,3 +1,6 @@
+
+**note:** this is an early prototype and not currently in active development. See https://github.com/tokenly/bitsplit instead
+
 # Bitsplit Server (Alpha)
 
 Cryptocurrency token transaction router and mass distribution system.
